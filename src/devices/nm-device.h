@@ -52,13 +52,14 @@ nm_device_state_reason_check (NMDeviceStateReason reason)
 	return reason;
 }
 
-#define NM_PENDING_ACTION_AUTOACTIVATE              "autoactivate"
-#define NM_PENDING_ACTION_RECHECK_AVAILABLE         "recheck-available"
-#define NM_PENDING_ACTION_CARRIER_WAIT              "carrier-wait"
-#define NM_PENDING_ACTION_WAITING_FOR_SUPPLICANT    "waiting-for-supplicant"
-#define NM_PENDING_ACTION_WIFI_SCAN                 "wifi-scan"
-#define NM_PENDING_ACTION_WAITING_FOR_COMPANION     "waiting-for-companion"
-#define NM_PENDING_ACTION_LINK_INIT                 "link-init"
+#define NM_PENDING_ACTION_AUTOACTIVATE                   "autoactivate"
+#define NM_PENDING_ACTION_WAITING_FOR_AUTOACTIVATION     "waiting-for-autoactivation"
+#define NM_PENDING_ACTION_RECHECK_AVAILABLE              "recheck-available"
+#define NM_PENDING_ACTION_CARRIER_WAIT                   "carrier-wait"
+#define NM_PENDING_ACTION_WAITING_FOR_SUPPLICANT         "waiting-for-supplicant"
+#define NM_PENDING_ACTION_WIFI_SCAN                      "wifi-scan"
+#define NM_PENDING_ACTION_WAITING_FOR_COMPANION          "waiting-for-companion"
+#define NM_PENDING_ACTION_LINK_INIT                      "link-init"
 
 #define NM_PENDING_ACTIONPREFIX_QUEUED_STATE_CHANGE "queued-state-change-"
 #define NM_PENDING_ACTIONPREFIX_ACTIVATION          "activation-"

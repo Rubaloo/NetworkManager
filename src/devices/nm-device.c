@@ -15668,6 +15668,11 @@ _set_state_full (NMDevice *self,
 			_cleanup_ip_pre (self, AF_INET6, CLEANUP_TYPE_DECONFIGURE);
 		}
 		break;
+	case NM_DEVICE_STATE_FAILED:
+		nm_device_add_pending_action (self,
+		                              NM_PENDING_ACTION_WAITING_FOR_AUTOACTIVATION,
+		                              FALSE);
+		break;
 	default:
 		break;
 	}

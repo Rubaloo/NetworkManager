@@ -1513,18 +1513,14 @@ schedule_activate_check (NMPolicy *self, NMDevice *device)
 	NMActiveConnection *ac;
 	const CList *tmp_list;
 
-	if (nm_manager_get_state (priv->manager) == NM_STATE_ASLEEP)
-		return;
-
-	if (!nm_device_autoconnect_allowed (device))
-		return;
-
-	if (find_pending_activation (self, device))
-		return;
+	if (   nm_manager_get_state (priv->manager) == NM_STATE_ASLEEP
+	    || !nm_device_autoconnect_allowed (device)
+	    || find_pending_activation (self, device))
+		goto out;
 
 	nm_manager_for_each_active_connection (priv->manager, ac, tmp_list) {
 		if (nm_active_connection_get_device (ac) == device)
-			return;
+			goto out;
 	}
 
 	nm_device_add_pending_action (device, NM_PENDING_ACTION_AUTOACTIVATE, TRUE);
@@ -1534,6 +1530,9 @@ schedule_activate_check (NMPolicy *self, NMDevice *device)
 	data->device = g_object_ref (device);
 	data->autoactivate_id = g_idle_add (auto_activate_device_cb, data);
 	c_list_link_tail (&priv->pending_activation_checks, &data->pending_lst);
+
+out:
+	nm_device_remove_pending_action (device, NM_PENDING_ACTION_WAITING_FOR_AUTOACTIVATION, FALSE);
 }
 
 static gboolean
