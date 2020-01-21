@@ -2245,10 +2245,10 @@ src_libNetworkManager_la_SOURCES = \
 	\
 	src/supplicant/nm-supplicant-config.c \
 	src/supplicant/nm-supplicant-config.h \
-	src/supplicant/nm-supplicant-interface.c \
-	src/supplicant/nm-supplicant-interface.h \
 	src/supplicant/nm-supplicant-manager.c \
 	src/supplicant/nm-supplicant-manager.h \
+	src/supplicant/nm-supplicant-interface.c \
+	src/supplicant/nm-supplicant-interface.h \
 	src/supplicant/nm-supplicant-settings-verify.c \
 	src/supplicant/nm-supplicant-settings-verify.h \
 	src/supplicant/nm-supplicant-types.h \

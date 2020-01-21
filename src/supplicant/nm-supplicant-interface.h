@@ -50,8 +50,10 @@ typedef enum {
 #define NM_IS_SUPPLICANT_INTERFACE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  NM_TYPE_SUPPLICANT_INTERFACE))
 #define NM_SUPPLICANT_INTERFACE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  NM_TYPE_SUPPLICANT_INTERFACE, NMSupplicantInterfaceClass))
 
-#define NM_SUPPLICANT_INTERFACE_IFACE               "iface"
-#define NM_SUPPLICANT_INTERFACE_OBJECT_PATH         "object-path"
+#define NM_SUPPLICANT_INTERFACE_DBUS_CONNECTION     "dbus-connection"
+#define NM_SUPPLICANT_INTERFACE_DBUS_NAME_OWNER     "dbus-name-owner"
+#define NM_SUPPLICANT_INTERFACE_DBUS_OBJECT_PATH    "dbus-object-path"
+#define NM_SUPPLICANT_INTERFACE_IFINDEX             "ifindex"
 #define NM_SUPPLICANT_INTERFACE_SCANNING            "scanning"
 #define NM_SUPPLICANT_INTERFACE_CURRENT_BSS         "current-bss"
 #define NM_SUPPLICANT_INTERFACE_P2P_GROUP_JOINED    "p2p-group-joined"
@@ -63,7 +65,6 @@ typedef enum {
 #define NM_SUPPLICANT_INTERFACE_AUTH_STATE          "auth-state"
 
 #define NM_SUPPLICANT_INTERFACE_STATE                   "state"
-#define NM_SUPPLICANT_INTERFACE_REMOVED                 "removed"
 #define NM_SUPPLICANT_INTERFACE_BSS_UPDATED             "bss-updated"
 #define NM_SUPPLICANT_INTERFACE_BSS_REMOVED             "bss-removed"
 #define NM_SUPPLICANT_INTERFACE_PEER_UPDATED            "peer-updated"
@@ -82,17 +83,22 @@ struct _NMSupplicantInterface {
 	GObject parent;
 	CList supp_lst;
 	struct _NMSupplicantInterfacePrivate *_priv;
+	bool supp_iface_created_by_us:1;
 };
 
 GType nm_supplicant_interface_get_type (void);
 
-NMSupplicantInterface *nm_supplicant_interface_new (const char *ifname,
-                                                    const char *object_path,
+NMSupplicantInterface *nm_supplicant_interface_new (GDBusConnection *dbus_connection,
+                                                    NMRefString *name_owner,
+                                                    NMRefString *object_path,
+                                                    int ifindex,
                                                     NMSupplicantDriver driver,
                                                     NMSupplCapMask global_capabilities);
 
-void nm_supplicant_interface_set_supplicant_available (NMSupplicantInterface *self,
-                                                       gboolean available);
+NMRefString *nm_supplicant_interface_get_dbus_name_owner (NMSupplicantInterface *self);
+NMRefString *nm_supplicant_interface_get_dbus_path (NMSupplicantInterface *self);
+
+void _nm_supplicant_interface_set_state_down (NMSupplicantInterface * self);
 
 typedef void (*NMSupplicantInterfaceAssocCb) (NMSupplicantInterface *iface,
                                               GError *error,
